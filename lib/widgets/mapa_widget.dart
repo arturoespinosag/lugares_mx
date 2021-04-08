@@ -10,27 +10,57 @@ class MapaWidget extends StatefulWidget {
   _MapaWidgetState createState() => _MapaWidgetState();
 }
 
-class _MapaWidgetState extends State<MapaWidget>{
+class _MapaWidgetState extends State<MapaWidget> with AutomaticKeepAliveClientMixin{
   
     GoogleMapController mapController;
     Set<Marker> _markers = {};
     BitmapDescriptor mapMarker;
     Lugar lugar;
+    bool isAlive = false;
+
 
     
     
     void _onMapCreated(GoogleMapController controller){
       
-
+      isAliveWidget();
       LugaresBloc lugaresBloc = Provider.of<LugaresBloc>(context, listen: false);
       Position _currentPosition = lugaresBloc.currentPosition;
       lugar = lugaresBloc.currentPlace;
       mapController = controller;
+      List<Lugar> lugares = lugaresBloc.lugares;
+      
+      
+      
+      
+
+
 
       setState(() {
+
+        // if(lugares.length != 0){
+          for(int i = 0; i < lugares.length; i++){
+              _markers.add(
+                Marker(
+                  markerId: MarkerId('id-$i'), 
+                  position: LatLng(double.parse(lugares[i].latitud), double.parse(lugares[i].longitud)),
+                  infoWindow: InfoWindow(
+                    title: '${lugares[i].nombre}\n${lugares[i].telefono}',
+                    snippet: 'A ${Geolocator.distanceBetween(_currentPosition.latitude, _currentPosition.longitude, double.parse(lugares[i].latitud), double.parse(lugares[i].longitud)).round().toString()} metros'
+
+            )
+          ),
+          
+        );
+            
+
+          // }
+
+        }
+        
         _markers.add(
           Marker(
-            markerId: MarkerId('id-1'), 
+            markerId: MarkerId('id-current'),
             position: LatLng(double.parse(lugaresBloc.currentPlace.latitud), double.parse(lugaresBloc.currentPlace.longitud)),
             infoWindow: InfoWindow(
               title: '${lugaresBloc.currentPlace.nombre}\n${lugaresBloc.currentPlace.telefono}',
@@ -43,17 +73,30 @@ class _MapaWidgetState extends State<MapaWidget>{
       }
       );
     }
+
+    Future<void> isAliveWidget() async{
+
+    final lugaresBloc = Provider.of<LugaresBloc>(context, listen: false);
+    isAlive = lugaresBloc.isAlive;
+    updateKeepAlive();
+    await Future.delayed(Duration(milliseconds: 500)); 
+
+  }
   
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     LugaresBloc lugaresBloc = Provider.of<LugaresBloc>(context);
+    // isAlive = lugaresBloc.isAlive;
+    // updateKeepAlive();
     return Scaffold(
       body: Container(
               height: double.infinity,
               child: GoogleMap(
+                key: PageStorageKey<String>('map'),
                 myLocationEnabled: true,
                 trafficEnabled: true,
-                mapType: MapType.hybrid,
+                mapType: MapType.normal,
                 rotateGesturesEnabled: true,
                 scrollGesturesEnabled: true,
                 initialCameraPosition: CameraPosition(
@@ -96,6 +139,9 @@ class _MapaWidgetState extends State<MapaWidget>{
 
 
   }
+
+  @override
+  bool get wantKeepAlive => isAlive;
 
   
 

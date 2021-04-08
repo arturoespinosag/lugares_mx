@@ -28,6 +28,9 @@ class _HomeWidgetState extends State<HomeWidget> with AutomaticKeepAliveClientMi
               ElevatedButton(
                 child: Text('Obtener ubicación', style: TextStyle(color: Colors.white)),
                 onPressed: () async{
+                  lugaresBloc.isAlive = false;
+                  updateKeepAlive();
+                  await Future.delayed(Duration(milliseconds: 500));
                   await getLoc()?.then((value) {
                     setState(() {
                       lugaresBloc.currentPosition = value;

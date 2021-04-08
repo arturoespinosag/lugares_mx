@@ -12,8 +12,8 @@ class Lugares{
 
     for (var item in jsonList) {
       
-      final pelicula = new Lugar.fromJsonMap(item);
-      items.add(pelicula);
+      final lugar = new Lugar.fromJsonMap(item);
+      items.add(lugar);
 
     }
 

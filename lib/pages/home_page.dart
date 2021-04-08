@@ -24,6 +24,13 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  @override
+  void dispose(){
+    _pageController.dispose();
+    super.dispose();
+
+  }
+
   void _onItemSelected(int selectedIndex){ // selectedIndex es el elementro presionado en bottom navy bar
     // _pageController.jumpToPage(selectedIndex);
     _pageController.animateToPage(selectedIndex, duration: Duration(milliseconds: 500), curve: Curves.fastLinearToSlowEaseIn);

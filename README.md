@@ -1,6 +1,6 @@
-# lugares_nav_bar
+# Lugares MX
 
-A new Flutter project.
+Una aplicación para encontrar todo tipo de lugares en México.
 
 ## Getting Started
 

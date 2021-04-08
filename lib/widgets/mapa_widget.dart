@@ -38,10 +38,13 @@ class _MapaWidgetState extends State<MapaWidget> with AutomaticKeepAliveClientMi
 
       setState(() {
 
-        // if(lugares.length != 0){
+    
           for(int i = 0; i < lugares.length; i++){
               _markers.add(
                 Marker(
+                  icon: (lugares[i].id != lugar.id) 
+                  ? BitmapDescriptor.defaultMarker 
+                  : BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
                   markerId: MarkerId('id-$i'), 
                   position: LatLng(double.parse(lugares[i].latitud), double.parse(lugares[i].longitud)),
                   infoWindow: InfoWindow(
@@ -58,18 +61,6 @@ class _MapaWidgetState extends State<MapaWidget> with AutomaticKeepAliveClientMi
 
         }
         
-        _markers.add(
-          Marker(
-            markerId: MarkerId('id-current'),
-            position: LatLng(double.parse(lugaresBloc.currentPlace.latitud), double.parse(lugaresBloc.currentPlace.longitud)),
-            infoWindow: InfoWindow(
-              title: '${lugaresBloc.currentPlace.nombre}\n${lugaresBloc.currentPlace.telefono}',
-              snippet: 'A ${Geolocator.distanceBetween(_currentPosition.latitude, _currentPosition.longitude, double.parse(lugar.latitud), double.parse(lugar.longitud)).round().toString()} metros'
-
-            )
-          ),
-          
-        );
       }
       );
     }

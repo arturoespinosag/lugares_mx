@@ -66,9 +66,9 @@ class _ResultadosWidgetState extends State<ResultadosWidget> with AutomaticKeepA
         future: lugaresProvider.getLugares('restaurante', '${currentPosition.latitude.toString()},${currentPosition.longitude.toString()}', '1000'),
         // future: lugaresProvider.getLugares('restaurante', '19.286314,-99.167673', '1000'),
         builder: (BuildContext context, AsyncSnapshot<List<Lugar>> snapshot) {
-          LugaresBloc lugaresBloc = Provider.of<LugaresBloc>(context);
-          List<Lugar> lugares = lugaresBloc.lugares;
-          lugares = snapshot.data;
+          LugaresBloc lugaresBloc = Provider.of(context);
+          List<Lugar> lugares = snapshot.data;
+          lugaresBloc.lugares = lugares;
           if(snapshot.hasData){
             return Container(
               child: Center(

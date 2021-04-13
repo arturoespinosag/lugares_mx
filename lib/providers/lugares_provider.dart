@@ -32,8 +32,14 @@ class LugaresProvider{
   
    final respuesta = await http.get(Uri.parse(url));
    final decodedData = json.decode(respuesta.body);
-   final lugares = new Lugares.fromJsonList(decodedData);
-   return lugares.items;
+   Lugar _lugar = new Lugar(id: "No hay resultados.");
+   List<Lugar> sinResultados = [_lugar];
+   if(decodedData == "No hay resultados."){
+     return sinResultados;
+   }else{
+     final lugares = new Lugares.fromJsonList(decodedData);
+     return lugares.items;
+   }
 
  }
 

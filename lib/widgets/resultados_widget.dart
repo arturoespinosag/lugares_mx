@@ -21,29 +21,24 @@ class ResultadosWidget extends StatefulWidget {
 class _ResultadosWidgetState extends State<ResultadosWidget> with AutomaticKeepAliveClientMixin{
   
 
-  bool isAlive = false;
+  bool isAlive = true;
+  List<Lugar> lugares1;
   
   @override
   void initState() { 
     super.initState();
-    isAliveWidget();
+
     
   }
 
-  Future<void> isAliveWidget() async{
-
-    final lugaresBloc = Provider.of<LugaresBloc>(context, listen: false);
-    isAlive = lugaresBloc.isAlive;
-    updateKeepAlive();
-    await Future.delayed(Duration(milliseconds: 500)); 
-
-  }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
     LugaresBloc lugaresBloc = Provider.of<LugaresBloc>(context);
     Position _currentPosition = lugaresBloc.currentPosition; 
+    String _query = lugaresBloc.query;
+    int _distance = lugaresBloc.distancia;
     // super.build(context);
     return Container(
       color: Colors.purpleAccent,
@@ -55,21 +50,31 @@ class _ResultadosWidgetState extends State<ResultadosWidget> with AutomaticKeepA
           fontSize: 20.0
         ),
       )): 
-      _listaLugares(_currentPosition, context),
+      _listaLugares(_currentPosition, _query, _distance, context),
       );
     
   }
 
-  Widget _listaLugares(Position currentPosition, BuildContext context){
+  Widget _listaLugares(Position currentPosition, String query, int distance, BuildContext context){
     return Container(
       child: FutureBuilder(
-        future: lugaresProvider.getLugares('restaurante', '${currentPosition.latitude.toString()},${currentPosition.longitude.toString()}', '1000'),
+
+        future: lugaresProvider.getLugares(query, '${currentPosition.latitude.toString()},${currentPosition.longitude.toString()}', '$distance'),
         // future: lugaresProvider.getLugares('restaurante', '19.286314,-99.167673', '1000'),
         builder: (BuildContext context, AsyncSnapshot<List<Lugar>> snapshot) {
-          LugaresBloc lugaresBloc = Provider.of(context);
           List<Lugar> lugares = snapshot.data;
-          lugaresBloc.lugares = lugares;
+          lugares1 = lugares;
           if(snapshot.hasData){
+            if(snapshot.data[0].id == "No hay resultados."){
+              return Center(
+                child: Text('No hay resultados',
+                  style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0
+                  ),
+                )
+              );
+            }else
             return Container(
               child: Center(
                 child: ListView.builder(
@@ -117,6 +122,7 @@ class _ResultadosWidgetState extends State<ResultadosWidget> with AutomaticKeepA
               _lugaresBloc.isAlive = false;
               updateKeepAlive();
               await Future.delayed(Duration(milliseconds: 1000));
+              _lugaresBloc.lugares = lugares1;
               _lugaresBloc.currentPlace = lugar;
               _lugaresBloc.pageController.jumpToPage(2);
             }, 

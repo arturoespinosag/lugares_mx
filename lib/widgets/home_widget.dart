@@ -14,6 +14,7 @@ class _HomeWidgetState extends State<HomeWidget> with AutomaticKeepAliveClientMi
   String information = '';
   Position _currentPosition;
   int _distance;
+  String _selected = 'restaurante';
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +26,15 @@ class _HomeWidgetState extends State<HomeWidget> with AutomaticKeepAliveClientMi
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              _listaOpciones(context),
               ElevatedButton(
-                child: Text('Obtener ubicación', style: TextStyle(color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                  animationDuration: Duration(milliseconds: 300),
+                  elevation: 5,
+                  shadowColor: Colors.blue,
+                ),
+                child: Text('Buscar', style: TextStyle(color: Colors.white)),
+                onLongPress: (){},
                 onPressed: () async{
                   lugaresBloc.isAlive = false;
                   updateKeepAlive();
@@ -44,10 +52,30 @@ class _HomeWidgetState extends State<HomeWidget> with AutomaticKeepAliveClientMi
               ),
               Container(
                 child: Text(information)
-              )
+              ),
+              _sliderDistance(context),
+              Text(lugaresBloc.distancia.toString())
             ],
           ),          
         ),
+    );
+  }
+
+  Widget _sliderDistance(BuildContext context){
+    final lugaresBloc = Provider.of<LugaresBloc>(context);
+    double value = lugaresBloc.distancia.toDouble();
+    return Slider(
+      divisions: 100,
+
+      value: value,
+      min: 100,
+      max: 1000,
+      onChanged: (distance){
+        lugaresBloc.distancia = distance.floor();
+        setState(() {
+          value = distance;
+        });
+      }
     );
   }
 
@@ -75,32 +103,31 @@ class _HomeWidgetState extends State<HomeWidget> with AutomaticKeepAliveClientMi
     }
 
     return await Geolocator.getCurrentPosition();
-
-
-  //   bool _serviceEnabled;
-  //   PermissionStatus _permissionGranted;
-
-  //   _serviceEnabled = await location.serviceEnabled();
-  //   if(!_serviceEnabled){
-  //     _serviceEnabled = await location.requestService();
-  //     if(!_serviceEnabled){
-  //      return 1;
-  //     }
-  //    }
-
-  //   _permissionGranted = await location.hasPermission();
-  //   if(_permissionGranted == PermissionStatus.denied){
-  //     _permissionGranted = await location.requestPermission();
-  //     if(_permissionGranted != PermissionStatus.granted){
-  //       return 1;
-  //     }
-  //   }
-
-  // _currentPosition = await location.getLocation();
-  
-  // return 1;
   }
 
   @override
   bool get wantKeepAlive => true;
+
+  Widget _listaOpciones(BuildContext context) {
+    final lugaresBloc = Provider.of<LugaresBloc>(context);
+    List<String> _options = ['restaurante', 'gasolineria', 'hospital', 'hotel', 'escuela', 'papeleria', 'mercado'];
+    List<DropdownMenuItem<String>> _lista = [];
+    _options.forEach((queryOp) { 
+      _lista.add(DropdownMenuItem(
+        child: Text(queryOp),
+        value: queryOp,
+      ));
+    });
+    return DropdownButton(
+      value: _selected,
+      items: _lista,
+      onChanged: (newQuery){
+        lugaresBloc.query = newQuery;
+        setState(() {
+          _selected = newQuery;
+        });
+      },
+    );
+  }
 }
+

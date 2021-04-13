@@ -33,13 +33,14 @@ class _HomePageState extends State<HomePage> {
 
   void _onItemSelected(int selectedIndex){ // selectedIndex es el elementro presionado en bottom navy bar
     // _pageController.jumpToPage(selectedIndex);
-    _pageController.animateToPage(selectedIndex, duration: Duration(milliseconds: 500), curve: Curves.fastLinearToSlowEaseIn);
+    _pageController.animateToPage(selectedIndex, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
   }
   @override
   Widget build(BuildContext context) {
     LugaresBloc lugaresBloc = Provider.of<LugaresBloc>(context);
     _pageController = new PageController();
     lugaresBloc.pageController = _pageController;
+    final size = MediaQuery.of(context).size;
 
     return Scaffold(
       // appBar: AppBar(
@@ -63,17 +64,29 @@ class _HomePageState extends State<HomePage> {
         items: <BottomNavyBarItem>[
           BottomNavyBarItem(
             icon: Icon(Icons.home), 
-            title: Text('Principal'),
+            title: Text('Principal',
+              style: TextStyle(
+                fontSize: size.height*0.02
+              ),
+            ),
             activeColor: Colors.red
           ),
           BottomNavyBarItem(
             icon: Icon(Icons.list), 
-            title: Text('Resultados'),
+            title: Text('Resultados',
+              style: TextStyle(
+                fontSize: size.height*0.02
+              ),
+            ),
             activeColor: Colors.purple
           ),
           BottomNavyBarItem(
             icon: Icon(Icons.map), 
-            title: Text('Mapa'),
+            title: Text('Mapa',
+              style: TextStyle(
+                fontSize: size.height*0.02
+              ),
+            ),
             activeColor: Colors.teal
           ),
         ],

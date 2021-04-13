@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lugares_nav_bar/bloc/lugares_bloc.dart';
+import 'package:lugares_nav_bar/models/detalles_page.dart';
 import 'package:lugares_nav_bar/pages/home_page.dart';
 import 'package:provider/provider.dart';
  
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
         title: 'Lugares',
         initialRoute: '/',
         routes: {
-          '/' : (BuildContext context) => HomePage(),
+          '/'        : (BuildContext context) => HomePage(),
+          'detalles' : (BuildContext context) => DetallesPage(),
         },
       ),
     );

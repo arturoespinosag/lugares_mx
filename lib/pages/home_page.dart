@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  PageController _pageController;
+  final PageController _pageController = PageController();
   List<Widget> _body = [HomeWidget(), ResultadosWidget(),MapaWidget()];
   int _currentIndex = 0;
 
@@ -38,7 +38,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     LugaresBloc lugaresBloc = Provider.of<LugaresBloc>(context);
-    _pageController = new PageController();
     lugaresBloc.pageController = _pageController;
     final size = MediaQuery.of(context).size;
 

@@ -14,10 +14,9 @@ class DetallesPage extends StatelessWidget {
         title: Text(lugar.nombre),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(
-            child: Text('${lugar.calle}  ${lugar.numExterior} int. ${lugar.numInterior}, Col. ${lugar.colonia}'), 
-          ),
+          Text('${lugar.calle}  ${lugar.numExterior} int. ${lugar.numInterior}, Col. ${lugar.colonia}'), 
           Text('Correo electrónico: ${lugar.correoE}'),
           Text('Centro Comercial: ${lugar.centroComercial}'),
           Text('Clase de Actividad: ${lugar.claseActividad}'),

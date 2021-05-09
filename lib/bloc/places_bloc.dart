@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:lugares_nav_bar/models/lugares_model.dart';
+import 'package:lugares_nav_bar/models/place_model.dart';
 
-class LugaresBloc extends ChangeNotifier{
+class PlacesBloc extends ChangeNotifier{
   Position _currentPosition;
-  Lugar _currentPlace = Lugar(id: 'zocalo',latitud: '19.432366683023716', longitud: '-99.13323364074559'); 
+  Place _currentPlace = Place(id: 'zocalo',latitud: '19.432366683023716', longitud: '-99.13323364074559'); 
   PageController pageController;
-  List<Lugar> _lugares = [];
+  List<Place> _places = [];
   bool isAlive = true;
   String _query = 'restaurante';
-  int _distancia = 650;
+  int _distance = 650;
+  
 
   Position get currentPosition => _currentPosition;
 
-  Lugar get currentPlace => _currentPlace;
+  Place get currentPlace => _currentPlace;
 
-  List get lugares => _lugares;
+  List get places => _places;
 
   String get query => _query;
 
-  int get distancia => _distancia;
+  int get distance => _distance;
 
 
   set currentPosition (Position value){
@@ -27,13 +28,13 @@ class LugaresBloc extends ChangeNotifier{
     notifyListeners();
   }
 
-  set currentPlace (Lugar  value){
+  set currentPlace (Place  value){
     _currentPlace = value;
     notifyListeners();
   }
 
-  set lugares (List  value){
-    _lugares = value;
+  set places (List  value){
+    _places = value;
     notifyListeners();
   }
 
@@ -42,8 +43,8 @@ class LugaresBloc extends ChangeNotifier{
     notifyListeners();
   }
 
-  set distancia (int  value){
-    _distancia = value;
+  set distance (int  value){
+    _distance = value;
     notifyListeners();
   }
 

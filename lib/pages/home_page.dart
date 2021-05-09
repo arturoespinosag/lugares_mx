@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
-import 'package:lugares_nav_bar/bloc/lugares_bloc.dart';
+import 'package:lugares_nav_bar/bloc/places_bloc.dart';
 import 'package:lugares_nav_bar/widgets/home_widget.dart';
-import 'package:lugares_nav_bar/widgets/mapa_widget.dart';
-import 'package:lugares_nav_bar/widgets/resultados_widget.dart';
+import 'package:lugares_nav_bar/widgets/map_widget.dart';
+import 'package:lugares_nav_bar/widgets/results_widget.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,32 +13,40 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   final PageController _pageController = PageController();
-  List<Widget> _body = [HomeWidget(), ResultadosWidget(),MapaWidget()];
+  List<Widget> _body = [HomeWidget(), ResultadosWidget(), MapaWidget()];
   int _currentIndex = 0;
 
-  void _onPageChanged(int index){//index es la página actual en pageview
-    setState(() {
-      _currentIndex = index; //_currentindex es el elemento coloreado en el bottom navy bar
-    });
+  void _onPageChanged(int index) {
+    //index es la página actual en pageview
+    setState(
+      () {
+        _currentIndex =
+            index; //_currentindex es el elemento coloreado en el bottom navy bar
+      },
+    );
   }
 
   @override
-  void dispose(){
+  void dispose() {
     _pageController.dispose();
     super.dispose();
-
   }
 
-  void _onItemSelected(int selectedIndex){ // selectedIndex es el elementro presionado en bottom navy bar
+  void _onItemSelected(int selectedIndex) {
+    // selectedIndex es el elementro presionado en bottom navy bar
     // _pageController.jumpToPage(selectedIndex);
-    _pageController.animateToPage(selectedIndex, duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+    _pageController.animateToPage(
+      selectedIndex,
+      duration: Duration(milliseconds: 200),
+      curve: Curves.easeIn,
+    );
   }
+
   @override
   Widget build(BuildContext context) {
-    LugaresBloc lugaresBloc = Provider.of<LugaresBloc>(context);
-    lugaresBloc.pageController = _pageController;
+    PlacesBloc placesBloc = Provider.of<PlacesBloc>(context);
+    placesBloc.pageController = _pageController;
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -62,35 +70,37 @@ class _HomePageState extends State<HomePage> {
         onItemSelected: _onItemSelected,
         items: <BottomNavyBarItem>[
           BottomNavyBarItem(
-            icon: Icon(Icons.home), 
-            title: Text('Principal',
+            icon: Icon(Icons.home),
+            title: Text(
+              'Principal',
               style: TextStyle(
-                fontSize: size.height*0.02
+                fontSize: size.height * 0.02,
               ),
             ),
-            activeColor: Colors.red
+            activeColor: Colors.red,
           ),
           BottomNavyBarItem(
-            icon: Icon(Icons.list), 
-            title: Text('Resultados',
+            icon: Icon(Icons.list),
+            title: Text(
+              'Resultados',
               style: TextStyle(
-                fontSize: size.height*0.02
+                fontSize: size.height * 0.0175,
               ),
             ),
-            activeColor: Colors.purple
+            activeColor: Colors.purple,
           ),
           BottomNavyBarItem(
-            icon: Icon(Icons.map), 
-            title: Text('Mapa',
+            icon: Icon(Icons.map),
+            title: Text(
+              'Mapa',
               style: TextStyle(
-                fontSize: size.height*0.02
+                fontSize: size.height * 0.02,
               ),
             ),
-            activeColor: Colors.teal
+            activeColor: Colors.teal,
           ),
         ],
       ),
-      
     );
   }
 }

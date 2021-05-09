@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lugares_nav_bar/bloc/places_bloc.dart';
 import 'package:lugares_nav_bar/models/place_model.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 class MapaWidget extends StatefulWidget {
   @override
@@ -119,7 +120,7 @@ class _MapaWidgetState extends State<MapaWidget>
         children: [
           FloatingActionButton(
             child: Icon(Icons.share),
-            onPressed: () {},
+            onPressed: _share,
           ),
           FloatingActionButton(
             child: Icon(Icons.accessibility),
@@ -158,6 +159,10 @@ class _MapaWidgetState extends State<MapaWidget>
             : LatLng(19.432366683023716, -99.13323364074559),
         zoom: 17);
     mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+  }
+
+  void _share(){
+    Share.share('Hola, quiero compartirte este gran lugar que te podría interesar\n${place.nombre}\n https://www.google.com/maps/search/?api=1&query=${place.latitud},${place.longitud}');
   }
 
   @override

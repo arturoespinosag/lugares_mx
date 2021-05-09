@@ -130,6 +130,7 @@ class _HomeWidgetState extends State<HomeWidget>
   Widget _optionsList(BuildContext context) {
     final placesBloc = Provider.of<PlacesBloc>(context);
     List<String> _options = [
+      'abarrotes',
       'restaurante',
       'gasolineria',
       'hospital',
